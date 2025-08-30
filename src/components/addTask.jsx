@@ -14,6 +14,7 @@ function AddTask() {
             toDo.id =TasksList.length+1
             TasksList.push(toDo)
             localStorage.setItem("tasks", JSON.stringify(TasksList))
+            window.location.href="/"
         }
         else{console.log("add a task")}
     }
