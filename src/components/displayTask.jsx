@@ -2,12 +2,8 @@ import React from 'react'
 import { useState } from 'react'
 
 function DisplayTask() {
-    const taskslist = localStorage.getItem("tasks")? JSON.parse(localStorage.getItem("tasks")) :[]
-    const tasksContainer =document.getElementById("tasks")
-    const allTasks =()=>{
-        tasksContainer.innerHTML =""
+  const tasksList = localStorage.getItem("tasks")? JSON.parse(localStorage.getItem("tasks")) :[]
 
-    }
     const [editTask, setEditTask] = useState("");
 
   const handleChange = (e) => {
@@ -112,17 +108,16 @@ function restoreCheckboxes() {
 
 //     });
 // });
+    // const tasksList = localStorage.getItem("tasks")? JSON.parse(localStorage.getItem("tasks")) :[]
+    
+    const allTasks =()=>{
+      let tasksContainer =document.getElementById("tasks")
+            // tasksContainer.innerHTML =""
 
-    return (
-        <section className='taskContainer'>
-            <div className="nav">
-                <button>All Tasks</button>
-                <button>Active</button>
-                <button>Completed</button>
-            </div>
-            <div id='tasks'>
-                {taskslist.map((item,index) =>(
-                    <div key={index} className='task'>
+        const completedTasks =localStorage.getItem("completedTasks")? JSON.parse(localStorage.getItem("completedTasks")):[]
+
+        completedTasks.map((item,index) =>{
+          tasksContainer.innerHTML +=<div key={index} className='task'>
                         <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
                         <span id={item.id} className='hide'>✔️</span>
                         <textarea name="" id="taskEdit" cols="30" value={editTask}  className='hide' onChange={handleChange}></textarea>
@@ -132,10 +127,52 @@ function restoreCheckboxes() {
                         <button>Delete</button>
                         </div>
                     </div>
+        })
+    }
+
+    // delete task
+    const deleteTask =(id)=>{
+      const itemIndex =tasksList.findIndex((item) => item.id ==id)
+      if(itemIndex == -1){
+        console.log("your todo list is empty")
+        console.log(itemIndex);
+
+      }
+      else{
+        tasksList.splice(itemIndex,1)
+        localStorage.setItem("tasks", JSON.stringify(tasksList))
+        console.log(itemIndex +"how");
+        window.location.href ="/"
+
+
+      }
+    }
+    return (
+        <section className='taskContainer'>
+            <div className="nav">
+                <button>All Tasks</button>
+                <button>Active</button>
+                <button onClick={allTasks}>Completed</button>
+            </div>
+            <div id='tasks'>
+                {tasksList.map((item,index) =>(
+                    <div key={index} className='task'>
+                        <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
+                        <span id={item.id} className='hide'>✔️</span>
+                        <textarea name="" id="taskEdit" cols="30" value={editTask}  className='hide' onChange={handleChange}></textarea>
+                       {/* <button taskslist={taskslist} onClick={saveEdit}>save</button> */}
+                        <div className='taskBtn'>
+                            <button  onClick={edit} id='editBtn'  data-taskid={item.id}>Edit</button>
+                        <button  onClick={ () =>deleteTask(item.id)}>Delete</button>
+                        </div>
+                    </div>
                 ))}
             </div>
         </section>
     )
+
+
+    
 }
 
 export default DisplayTask
