@@ -123,7 +123,7 @@ function restoreCheckboxes() {
 // });
     // const tasksList = localStorage.getItem("tasks")? JSON.parse(localStorage.getItem("tasks")) :[]
     // to display tasks
-    const completedTasks =JSON.parse(localStorage.getItem("completedTasks"))
+    const completedTasks =localStorage.getItem("completedTasks")?JSON.parse(localStorage.getItem("completedTasks")):[]
       let allTask =document.getElementById("tasks")
     const allTasks =()=>{
       window.location.href="/"
