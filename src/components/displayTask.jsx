@@ -9,18 +9,6 @@ function DisplayTask() {
   const handleChange = (e) => {
     setEditTask(e.target.value);
   };
-  
-            // const saveEdit =(taskslist) =>{
-            //     const edii=taskslist.filter((item) => item.id ==taskslist.id)
-            //     console.log(edii)
-
-            // }
-
-            // // editing
-            // const save=()=>{
-            //   const saveEdit =document.getElementById("editingBtn")
-
-            // }
     const edit =(id) =>{
             const saveEdit =document.getElementById("taskEdit"+id)
             const  taskEdit=document.getElementById("edit"+id)
@@ -46,9 +34,15 @@ function DisplayTask() {
     const saveEditt =(id)=>{
      const editedTask = tasksList.find((item) => item.id ==id)
                      console.log(editedTask)
-                     editedTask.task=editTask
-                     localStorage.setItem("tasks",JSON.stringify(tasksList))
-                     window.location.href="/"
+                     if(editTask){
+                      editedTask.task=editTask
+                      localStorage.setItem("tasks",JSON.stringify(tasksList))
+                      window.location.href="/"
+                     }
+                    else{
+                      window.location.href="/"
+
+                    }
     }
 // Function to restore checkbox states on page load
 function restoreCheckboxes() {
@@ -128,26 +122,36 @@ function restoreCheckboxes() {
 //     });
 // });
     // const tasksList = localStorage.getItem("tasks")? JSON.parse(localStorage.getItem("tasks")) :[]
-    
-    // const allTasks =()=>{
-    //   let tasksContainer =document.getElementById("tasks")
-    //         // tasksContainer.innerHTML =""
+    // to display tasks
 
-    //     const completedTasks =localStorage.getItem("completedTasks")? JSON.parse(localStorage.getItem("completedTasks")):[]
+    const allTasks =()=>{
+      window.location.href="/"
+    }
+    const completedTask =()=>{
+      let tasksContainer =document.getElementById("tasks")
+            tasksContainer.innerHTML =""
 
-    //     completedTasks.map((item,index) =>{
-    //       tasksContainer.innerHTML +=<div key={index} className='task'>
-    //                     <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
-    //                     <span id={item.id} className='hide'>✔️</span>
-    //                     <textarea name="" id="taskEdit" cols="30" value={editTask}  className='hide' onChange={handleChange}></textarea>
-    //                    {/* <button taskslist={taskslist} onClick={saveEdit}>save</button> */}
-    //                     <div className='taskBtn'>
-    //                         <button  onClick={edit} id='editBtn'  data-taskid={item.id}>Edit</button>
-    //                     <button>Delete</button>
-    //                     </div>
-    //                 </div>
-    //     })
-    // }
+        const completedTasks =JSON.parse(localStorage.getItem("completedTasks"))
+
+        completedTasks.map((item,index) =>{
+          tasksContainer.innerHTML +=`<div key=${index} className='task'>
+          <label htmlFor=""><input type="checkbox" data-task=${item.task} data-id=${item.id} name="" id="" className='taskCheck' /> ${item.task}</label>
+          <span id=${item.id} className='hide'>✔️</span>
+          <div id=${"taskEdit"+item.id} className='hide'>
+          <textarea name=""  cols="30" value=${editTask}  className='' onChange={handleChange}></textarea>
+          <div  id='editingBtn' className='taskBtn' >
+          <button id='editBtn'onClick={()=> edit (item.id)} >Cancel</button>
+          <button onClick={() => saveEditt(item.id)}>Save</button>
+          </div>
+          </div>
+          <div className='show taskBtn ' id=${'edit'+item.id}>
+          <button  onClick={() => edit (item.id)} id='editBtn'>Edit</button>
+          <button  onClick={ () =>deleteTask(item.id)}>Delete</button>
+          </div>
+         
+      </div>`
+        })
+    }
 
     // delete task
     const deleteTask =(id)=>{
@@ -169,10 +173,10 @@ function restoreCheckboxes() {
     return (
         <section className='taskContainer'>
             <div className="nav">
-                <button>All Tasks</button>
+                <button onClick={allTasks}>All Tasks</button>
                 <button>Active</button>
                 <button
-                //  onClick={allTasks}
+                 onClick={completedTask}
                 >
                   Completed</button>
             </div>
@@ -201,7 +205,7 @@ function restoreCheckboxes() {
     )
 
 
-    
-}
+    completedTask()
 
+}
 export default DisplayTask
