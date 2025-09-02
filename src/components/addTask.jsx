@@ -12,7 +12,7 @@ function AddTask() {
         if(task){
             toDo.task = task 
             toDo.id =TasksList.length+1
-            TasksList.unshift(toDo)
+            TasksList.push(toDo)
             localStorage.setItem("tasks", JSON.stringify(TasksList))
             window.location.href="/"
         }

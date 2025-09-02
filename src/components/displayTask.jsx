@@ -10,26 +10,45 @@ function DisplayTask() {
     setEditTask(e.target.value);
   };
   
-            const saveEdit =(taskslist) =>{
-                const edii=taskslist.filter((item) => item.id ==taskslist.id)
-                console.log(edii)
+            // const saveEdit =(taskslist) =>{
+            //     const edii=taskslist.filter((item) => item.id ==taskslist.id)
+            //     console.log(edii)
 
-            }
-    const edit =(task,taskslist) =>{
-            const taskEdit =document.getElementById("taskEdit")
+            // }
+
+            // // editing
+            // const save=()=>{
+            //   const saveEdit =document.getElementById("editingBtn")
+
+            // }
+    const edit =(id) =>{
+            const saveEdit =document.getElementById("taskEdit"+id)
+            const  taskEdit=document.getElementById("edit"+id)
+
             if(taskEdit.classList.contains("hide")){
                 taskEdit.classList.remove("hide")
                 taskEdit.classList.add("show")
-                document.getElementById("editBtn").innerText ="Save"
+                saveEdit.classList.remove("show")
+                saveEdit.classList.add("hide")
+                // document.getElementById("editBtn").innerText ="Save"
             }
             else{
                 taskEdit.classList.remove("show")
                 taskEdit.classList.add("hide")
-                document.getElementById("editBtn").innerText ="Edit"
-
+                saveEdit.classList.remove("hide")
+                saveEdit.classList.add("show")
+                // document.getElementById("editBtn").innerText ="Edit"
             }
-            console.log(task)
+            // console.log(task)
+    }
 
+    // to save editing
+    const saveEditt =(id)=>{
+     const editedTask = tasksList.find((item) => item.id ==id)
+                     console.log(editedTask)
+                     editedTask.task=editTask
+                     localStorage.setItem("tasks",JSON.stringify(tasksList))
+                     window.location.href="/"
     }
 // Function to restore checkbox states on page load
 function restoreCheckboxes() {
@@ -43,7 +62,7 @@ function restoreCheckboxes() {
       }
     });
   }
-  
+
   // Listen for checkbox changes and update LocalStorage
   document.addEventListener('change', (e) => {
     if (e.target.matches('input[type="checkbox"]')) {
@@ -110,25 +129,25 @@ function restoreCheckboxes() {
 // });
     // const tasksList = localStorage.getItem("tasks")? JSON.parse(localStorage.getItem("tasks")) :[]
     
-    const allTasks =()=>{
-      let tasksContainer =document.getElementById("tasks")
-            // tasksContainer.innerHTML =""
+    // const allTasks =()=>{
+    //   let tasksContainer =document.getElementById("tasks")
+    //         // tasksContainer.innerHTML =""
 
-        const completedTasks =localStorage.getItem("completedTasks")? JSON.parse(localStorage.getItem("completedTasks")):[]
+    //     const completedTasks =localStorage.getItem("completedTasks")? JSON.parse(localStorage.getItem("completedTasks")):[]
 
-        completedTasks.map((item,index) =>{
-          tasksContainer.innerHTML +=<div key={index} className='task'>
-                        <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
-                        <span id={item.id} className='hide'>✔️</span>
-                        <textarea name="" id="taskEdit" cols="30" value={editTask}  className='hide' onChange={handleChange}></textarea>
-                       {/* <button taskslist={taskslist} onClick={saveEdit}>save</button> */}
-                        <div className='taskBtn'>
-                            <button  onClick={edit} id='editBtn'  data-taskid={item.id}>Edit</button>
-                        <button>Delete</button>
-                        </div>
-                    </div>
-        })
-    }
+    //     completedTasks.map((item,index) =>{
+    //       tasksContainer.innerHTML +=<div key={index} className='task'>
+    //                     <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
+    //                     <span id={item.id} className='hide'>✔️</span>
+    //                     <textarea name="" id="taskEdit" cols="30" value={editTask}  className='hide' onChange={handleChange}></textarea>
+    //                    {/* <button taskslist={taskslist} onClick={saveEdit}>save</button> */}
+    //                     <div className='taskBtn'>
+    //                         <button  onClick={edit} id='editBtn'  data-taskid={item.id}>Edit</button>
+    //                     <button>Delete</button>
+    //                     </div>
+    //                 </div>
+    //     })
+    // }
 
     // delete task
     const deleteTask =(id)=>{
@@ -152,19 +171,29 @@ function restoreCheckboxes() {
             <div className="nav">
                 <button>All Tasks</button>
                 <button>Active</button>
-                <button onClick={allTasks}>Completed</button>
+                <button
+                //  onClick={allTasks}
+                >
+                  Completed</button>
             </div>
             <div id='tasks'>
                 {tasksList.map((item,index) =>(
                     <div key={index} className='task'>
                         <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
                         <span id={item.id} className='hide'>✔️</span>
-                        <textarea name="" id="taskEdit" cols="30" value={editTask}  className='hide' onChange={handleChange}></textarea>
-                       {/* <button taskslist={taskslist} onClick={saveEdit}>save</button> */}
-                        <div className='taskBtn'>
-                            <button  onClick={edit} id='editBtn'  data-taskid={item.id}>Edit</button>
+                       {/* task editing */}
+                        <div id={"taskEdit"+item.id} className='hide'>
+                        <textarea name=""  cols="30" value={editTask}  className='' onChange={handleChange}></textarea>
+                        <div  id='editingBtn' className='taskBtn' >
+                        <button id='editBtn'onClick={()=> edit (item.id)} >Cancel</button>
+                        <button onClick={() => saveEditt(item.id)}>Save</button>
+                        </div>
+                        </div>
+                        <div className='show taskBtn ' id={'edit'+item.id}>
+                        <button  onClick={() => edit (item.id)} id='editBtn'>Edit</button>
                         <button  onClick={ () =>deleteTask(item.id)}>Delete</button>
                         </div>
+                       
                     </div>
                 ))}
             </div>
