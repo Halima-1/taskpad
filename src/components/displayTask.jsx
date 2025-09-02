@@ -123,35 +123,61 @@ function restoreCheckboxes() {
 // });
     // const tasksList = localStorage.getItem("tasks")? JSON.parse(localStorage.getItem("tasks")) :[]
     // to display tasks
-
+    const completedTasks =JSON.parse(localStorage.getItem("completedTasks"))
+      let allTask =document.getElementById("tasks")
     const allTasks =()=>{
       window.location.href="/"
+      
     }
+
     const completedTask =()=>{
-      let tasksContainer =document.getElementById("tasks")
-            tasksContainer.innerHTML =""
+      let allTask =document.getElementById("tasks")
+      let comTasks =document.getElementById("completedTasks")
+      if(allTask.classList.contains("show")){
+        allTask.classList.remove("show")
+        allTask.classList.add("hide")
+        comTasks.classList.remove("hide")
+        comTasks.classList.add("show")
+        document.getElementById("completedTaskBtn").style.border="1px solid black"
+        document.getElementById("allTasksBtn").style.border="1px solid grey"
+        document.getElementById("activeTaskBtn").style.border="1px solid grey"
 
-        const completedTasks =JSON.parse(localStorage.getItem("completedTasks"))
-
-        completedTasks.map((item,index) =>{
-          tasksContainer.innerHTML +=`<div key=${index} className='task'>
-          <label htmlFor=""><input type="checkbox" data-task=${item.task} data-id=${item.id} name="" id="" className='taskCheck' /> ${item.task}</label>
-          <span id=${item.id} className='hide'>✔️</span>
-          <div id=${"taskEdit"+item.id} className='hide'>
-          <textarea name=""  cols="30" value=${editTask}  className='' onChange={handleChange}></textarea>
-          <div  id='editingBtn' className='taskBtn' >
-          <button id='editBtn'onClick={()=> edit (item.id)} >Cancel</button>
-          <button onClick={() => saveEditt(item.id)}>Save</button>
-          </div>
-          </div>
-          <div className='show taskBtn ' id=${'edit'+item.id}>
-          <button  onClick={() => edit (item.id)} id='editBtn'>Edit</button>
-          <button  onClick={ () =>deleteTask(item.id)}>Delete</button>
-          </div>
-         
-      </div>`
-        })
+        console.log("hi")
+      }
+      // else{
+      //   allTask.classList.remove("hide")
+      //   allTask.classList.add("show")
+      //   comTasks.classList.remove("show")
+      //   comTasks.classList.add("hide")
+      // }
     }
+    const activeTasks =()=>{
+      let activeTasks =document.getElementById("active-tasks")
+    }
+    // const completedTask =()=>{
+    //   let tasksContainer =document.getElementById("tasks")
+    //         tasksContainer.innerHTML =""
+
+
+    //     completedTasks.map((item,index) =>{
+    //       tasksContainer.innerHTML +=`<div key=${index} className='task'>
+    //       <label htmlFor=""><input type="checkbox" data-task=${item.task} data-id=${item.id} name="" id="" className='taskCheck' /> ${item.task}</label>
+    //       <span id=${item.id} className='hide'>✔️</span>
+    //       <div id=${"taskEdit"+item.id} className='hide'>
+    //       <textarea name=""  cols="30" value=${editTask}  className='' onChange={handleChange}></textarea>
+    //       <div  id='editingBtn' className='taskBtn' >
+    //       <button id='editBtn'onClick={()=> edit (item.id)} >Cancel</button>
+    //       <button onClick={() => saveEditt(item.id)}>Save</button>
+    //       </div>
+    //       </div>
+    //       <div className='show taskBtn ' id=${'edit'+item.id}>
+    //       <button  onClick={() => edit (item.id)} id='editBtn'>Edit</button>
+    //       <button  onClick={ () =>deleteTask(item.id)}>Delete</button>
+    //       </div>
+         
+    //   </div>`
+    //     })
+    // }
 
     // delete task
     const deleteTask =(id)=>{
@@ -173,15 +199,60 @@ function restoreCheckboxes() {
     return (
         <section className='taskContainer'>
             <div className="nav">
-                <button onClick={allTasks}>All Tasks</button>
-                <button>Active</button>
-                <button
+                <button onClick={allTasks} id='allTasksBtn'>All Tasks</button>
+                <button id='activeTaskBtn'>Active</button>
+                <button id='completedTaskBtn'
                  onClick={completedTask}
                 >
                   Completed</button>
             </div>
-            <div id='tasks'>
+            <div id='tasks' className='show'>
                 {tasksList.map((item,index) =>(
+                    <div key={index} className='task '>
+                        <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
+                        <span id={item.id} className='hide'>✔️</span>
+                       {/* task editing */}
+                        <div id={"taskEdit"+item.id} className='hide'>
+                        <textarea name=""  cols="30" value={editTask}  className='' onChange={handleChange}></textarea>
+                        <div  id='editingBtn' className='taskBtn' >
+                        <button id='editBtn'onClick={()=> edit (item.id)} >Cancel</button>
+                        <button onClick={() => saveEditt(item.id)}>Save</button>
+                        </div>
+                        </div>
+                        <div className='show taskBtn ' id={'edit'+item.id}>
+                        <button  onClick={() => edit (item.id)} id='editBtn'>Edit</button>
+                        <button  onClick={ () =>deleteTask(item.id)}>Delete</button>
+                        </div>
+                       
+                    </div>
+                ))}
+            </div>
+
+            {/* active tasks */}
+            <div id='active-tasks' className=' hide'>
+                {tasksList.map((item,index) =>(
+                    <div key={index} className='task'>
+                        <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
+                        <span id={item.id} className='hide'>✔️</span>
+                       {/* task editing */}
+                        <div id={"taskEdit"+item.id} className='hide'>
+                        <textarea name=""  cols="30" value={editTask}  className='' onChange={handleChange}></textarea>
+                        <div  id='editingBtn' className='taskBtn' >
+                        <button id='editBtn'onClick={()=> edit (item.id)} >Cancel</button>
+                        <button onClick={() => saveEditt(item.id)}>Save</button>
+                        </div>
+                        </div>
+                        <div className='show taskBtn ' id={'edit'+item.id}>
+                        <button  onClick={() => edit (item.id)} id='editBtn'>Edit</button>
+                        <button  onClick={ () =>deleteTask(item.id)}>Delete</button>
+                        </div>
+                       
+                    </div>
+                ))}
+            </div>
+            {/* completed tasks */}
+            <div id='completedTasks' className='tasks hide'>
+                {completedTasks.map((item,index) =>(
                     <div key={index} className='task'>
                         <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
                         <span id={item.id} className='hide'>✔️</span>

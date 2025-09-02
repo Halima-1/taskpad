@@ -13,10 +13,25 @@ h1 {
   line-height: 1.1;
 }
 
-.container {
+.appContainer {
   width: 400px;
   margin: auto;
+  padding: 20px;
+  box-shadow: -14px 11px 75px -7px rgba(0, 0, 0, 0.44);
+  -webkit-box-shadow: -14px 11px 75px -7px rgba(0, 0, 0, 0.44);
+  -moz-box-shadow: -14px 11px 75px -7px rgba(0, 0, 0, 0.44);
+
+}
+
+.container {
+  width: 100%;
+  margin: auto;
   display: block;
+}
+
+.taskContainer {
+  width: 100%;
+
 }
 
 textarea {
@@ -28,7 +43,7 @@ textarea {
 }
 
 .nav {
-  width: 92%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -63,7 +78,7 @@ button {
 }
 
 .taskBtn {
-  width: 95%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -72,7 +87,7 @@ button {
 }
 
 .task {
-  width: 90%;
+  width: 100%;
   margin: 15px auto;
 }
 
@@ -86,6 +101,11 @@ button {
   background-color: white;
   border: 1px solid black;
   color: black;
+}
+
+#allTasksBtn {
+  border: 1px solid black;
+
 }
 
 .taskBtn :nth-child(2) {
