@@ -21,7 +21,7 @@ function AddTask() {
 
     return (
         <section className='container'>
-            <h2>Todo App</h2>
+            <h2>Task pad</h2>
 <textarea
         value={task}
         onChange={handleChange}

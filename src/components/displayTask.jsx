@@ -129,7 +129,6 @@ function restoreCheckboxes() {
       window.location.href="/"
       
     }
-
     const completedTask =()=>{
       let allTask =document.getElementById("tasks")
       let comTasks =document.getElementById("completedTasks")
@@ -207,7 +206,10 @@ function restoreCheckboxes() {
                   Completed</button>
             </div>
             <div id='tasks' className='show'>
-                {tasksList.map((item,index) =>(
+              <b>{tasksList.length} task(s) remaining</b>
+                {
+                tasksList.length !==0?
+                tasksList.map((item,index) =>(
                     <div key={index} className='task '>
                         <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
                         <span id={item.id} className='hide'>✔️</span>
@@ -225,12 +227,18 @@ function restoreCheckboxes() {
                         </div>
                        
                     </div>
-                ))}
+                )):
+                <div className='task '>
+                  <p>No task available</p>
+                </div>
+              }
             </div>
 
             {/* active tasks */}
             <div id='active-tasks' className=' hide'>
-                {tasksList.map((item,index) =>(
+                {
+                
+                tasksList.map((item,index) =>(
                     <div key={index} className='task'>
                         <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
                         <span id={item.id} className='hide'>✔️</span>
@@ -252,7 +260,9 @@ function restoreCheckboxes() {
             </div>
             {/* completed tasks */}
             <div id='completedTasks' className='tasks hide'>
-                {completedTasks.map((item,index) =>(
+                {
+                completedTask.length !==0?
+                completedTasks.map((item,index) =>(
                     <div key={index} className='task'>
                         <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
                         <span id={item.id} className='hide'>✔️</span>
@@ -270,7 +280,11 @@ function restoreCheckboxes() {
                         </div>
                        
                     </div>
-                ))}
+                )):
+                <div className='task '>
+                  <p>No completed task available</p>
+                </div>
+              }
             </div>
         </section>
     )
