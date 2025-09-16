@@ -97,6 +97,22 @@ button {
 
 }
 
+.checkk {
+  width: 25px;
+  height: 25px;
+  border: 1px solid black;
+  text-align: center;
+  /* align-items: center;
+  align-self: center; */
+  align-content: center;
+}
+
+.checkIcon {
+  width: 20px;
+  height: 20px;
+  margin-left: 3px;
+}
+
 .taskBtn :nth-child(1) {
   background-color: white;
   border: 1px solid black;

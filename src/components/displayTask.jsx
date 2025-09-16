@@ -1,8 +1,11 @@
 import React from 'react'
-import { useState } from 'react'
+import {useEffect, useState } from 'react'
+import { FaCheck } from "react-icons/fa";  
+// import React, { useState, useEffect } from "react";
 
+const tasksList = localStorage.getItem("tasks")? JSON.parse(localStorage.getItem("tasks")) :[]
 function DisplayTask() {
-  const tasksList = localStorage.getItem("tasks")? JSON.parse(localStorage.getItem("tasks")) :[]
+  // localStorage.setItem("activeItems", JSON.stringify(activeItems));
 
     const [editTask, setEditTask] = useState("");
 
@@ -44,140 +47,114 @@ function DisplayTask() {
 
                     }
     }
-// Function to restore checkbox states on page load
-function restoreCheckboxes() {
-    const savedItems = JSON.parse(localStorage.getItem('completedTasks')) || [];
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  
-    checkboxes.forEach(checkbox => {
-      const itemId = checkbox.dataset.id;
-      if (savedItems.some(item => item.id === itemId)) {
-        checkbox.checked = true;
-      }
-    });
-  }
 
-  // Listen for checkbox changes and update LocalStorage
-  document.addEventListener('change', (e) => {
-    if (e.target.matches('input[type="checkbox"]')) {
-      const checkbox = e.target;
-      const data = {
-        id: checkbox.dataset.id,
-        task: checkbox.dataset.task
-      };
-  
-      let selectedItems = JSON.parse(localStorage.getItem('completedTasks')) || [];
-  
-      if (checkbox.checked) {
-        // Add item if checked
-        if (!selectedItems.some(item => item.id === data.id)) {
-            document.getElementById(`${checkbox.dataset.id}`).classList.remove("hide")
-            document.getElementById(`${checkbox.dataset.id}`).classList.add("show")
-            // console.log(document.getElementById(`checked2`).innerText)
-          selectedItems.push(data);
-        }
-      } else {
-        // Remove item if unchecked
-        selectedItems = selectedItems.filter(item => item.id !== data.id);
-      }
-  
-      localStorage.setItem('completedTasks', JSON.stringify(selectedItems));
-    }
-  });
-  
-  // Call the restore function when the page loads
-  document.addEventListener('DOMContentLoaded', restoreCheckboxes);
-  
+  // Restore from localStorage on component mount
+  const [activeItems, setActiveItems] = useState([]);
+ // Load completedTasks from localStorage on mount
+ useEffect(() => {
+  const saved = JSON.parse(localStorage.getItem("activeItems")) || [];
+  setActiveItems(saved.map(Number)); // convert to numbers
+}, []);
 
-    // checkbox
-//     document.addEventListener('DOMContentLoaded', () => {
+// Save completedTasks to localStorage whenever it changes
+useEffect(() => {
+  localStorage.setItem("activeItems", JSON.stringify(activeItems));
+}, [activeItems]);
 
-//     const taskCheckboxes = document.querySelectorAll(".taskCheck");
-//     taskCheckboxes.forEach(cb => {
-//         cb.addEventListener("change", () => {
-//             let total = 0;
-//             const totalAd = []
-//             let taskId = ""
-//             taskCheckboxes.forEach(item => {
-//                 if (item.checked) {
-//                     // total += parseInt(item.getAttribute("data-price"));
-//                     // let price = parseInt(item.getAttribute("data-price"));
+      const completedTasks =localStorage.getItem("completedTasks")?JSON.parse(localStorage.getItem("completedTasks")):[]
+// Toggle a task (add/remove from completedTasks)
+const toggleTask = (id) => {
+  setActiveItems((prev) =>
+    prev.includes(id) ? prev.filter((taskId) => taskId !== id) : [...prev, id]
+  );
+  const activeIte = tasksList.filter(
+    (task) => activeItems.includes(task.id)
+  );
+  const doneItems = tasksList.filter((task) =>
+    !activeItems.includes(task.id)
+  );
+        console.log(activeIte);
+              console.log(doneItems);
+              localStorage.setItem("completedTasks",JSON.stringify(doneItems))
+              localStorage.setItem("activeTasks",JSON.stringify(activeIte))
+      let activeItemss= JSON.parse(localStorage.getItem("activeItems"))?.map(id => Number(id)) || [];
+};
 
-//                     taskId = parseInt(item.getAttribute("data-id"));
-//                    const compTask =taskslist.find((item) => item.id ==taskId)
-//                     console.log(compTask)
-//                     // let eachAddon = { selectedAddon: selectedAddon, price: price }
-//                     // totalAd.push(eachAddon)
-//                     localStorage.setItem("taskId", (taskId))
-//                     // document.getElementById("notify").textContent = ""
+// Derive active and done tasks
+const activeIte = tasksList.filter(
+  (task) => activeItems.includes(task.id)
+);
+const doneItems = tasksList.filter((task) =>
+  !activeItems.includes(task.id)
+);
+      console.log(activeIte);
+            console.log(doneItems);
+            localStorage.setItem("completedTasks",JSON.stringify(doneItems))
+            localStorage.setItem("activeTasks",JSON.stringify(activeIte))
+    let activeItemss= JSON.parse(localStorage.getItem("activeItems"))?.map(id => Number(id)) || [];
 
-//                 }
-//                 // localStorage.setItem("totalAddonsPrice", total)
-//                 // document.getElementById("addons-total").textContent = total
-//                 // console.log(item)
+// TASKS DISPLAY
+    let allTask =document.getElementById("tasks")
+    let comTasks =document.getElementById("completedTasks")
+    let actTask =document.getElementById("activeTasks")
 
-//             });
-//         });
-
-//     });
-// });
-    // const tasksList = localStorage.getItem("tasks")? JSON.parse(localStorage.getItem("tasks")) :[]
-    // to display tasks
-    const completedTasks =localStorage.getItem("completedTasks")?JSON.parse(localStorage.getItem("completedTasks")):[]
-      let allTask =document.getElementById("tasks")
-    const allTasks =()=>{
-      window.location.href="/"
-      
-    }
-    const completedTask =()=>{
-      let allTask =document.getElementById("tasks")
-      let comTasks =document.getElementById("completedTasks")
-      if(allTask.classList.contains("show")){
+// completed tasks display
+    const completedTask =()=>{ 
+      if(allTask.classList.contains("show") || actTask.classList.contains("show")){
         allTask.classList.remove("show")
         allTask.classList.add("hide")
         comTasks.classList.remove("hide")
         comTasks.classList.add("show")
+        actTask.classList.remove("show")
+        actTask.classList.add("hide")
         document.getElementById("completedTaskBtn").style.border="1px solid black"
         document.getElementById("allTasksBtn").style.border="1px solid grey"
         document.getElementById("activeTaskBtn").style.border="1px solid grey"
-
         console.log("hi")
       }
-      // else{
-      //   allTask.classList.remove("hide")
-      //   allTask.classList.add("show")
-      //   comTasks.classList.remove("show")
-      //   comTasks.classList.add("hide")
-      // }
     }
-    const activeTasks =()=>{
-      let activeTasks =document.getElementById("active-tasks")
+    
+    // all tasks ddisplay
+    const allTasks =()=>{
+      if(allTask.classList.contains("hide")){
+        allTask.classList.remove("hide")
+        allTask.classList.add("show")
+        comTasks.classList.remove("show")
+        comTasks.classList.add("hide")
+        actTask.classList.remove("show")
+        actTask.classList.add("hide")
+        document.getElementById("completedTaskBtn").style.border="1px solid grey"
+        document.getElementById("allTasksBtn").style.border="1px solid black"
+        document.getElementById("activeTaskBtn").style.border="1px solid grey"
+        console.log("hi")
+      }
+      // window.location.href="/"
+      
     }
-    // const completedTask =()=>{
-    //   let tasksContainer =document.getElementById("tasks")
-    //         tasksContainer.innerHTML =""
+    const activeTasks=()=>{
+      let allTask =document.getElementById("tasks")
+      let comTasks =document.getElementById("completedTasks")
+      let actTask =document.getElementById("activeTasks")
+
+      if(actTask.classList.contains("hide")){
+        actTask.classList.remove("hide")
+        actTask.classList.add("show")
+        comTasks.classList.remove("show")
+        comTasks.classList.add("hide")
+        allTask.classList.remove("show")
+        allTask.classList.add("hide")
+        document.getElementById("completedTaskBtn").style.border="1px solid grey"
+        document.getElementById("allTasksBtn").style.border="1px solid grey"
+        document.getElementById("activeTaskBtn").style.border="1px solid black"
+        console.log("hi")
+      }
+      // const tasksList = localStorage.getItem("tasks")? JSON.parse(localStorage.getItem("tasks")) :[]
+      // const activeTsk =tasksList.filter(task => !activeItemss.includes(task.id))
+      console.log(activeIte);
+      console.log(activeItemss);
 
 
-    //     completedTasks.map((item,index) =>{
-    //       tasksContainer.innerHTML +=`<div key=${index} className='task'>
-    //       <label htmlFor=""><input type="checkbox" data-task=${item.task} data-id=${item.id} name="" id="" className='taskCheck' /> ${item.task}</label>
-    //       <span id=${item.id} className='hide'>✔️</span>
-    //       <div id=${"taskEdit"+item.id} className='hide'>
-    //       <textarea name=""  cols="30" value=${editTask}  className='' onChange={handleChange}></textarea>
-    //       <div  id='editingBtn' className='taskBtn' >
-    //       <button id='editBtn'onClick={()=> edit (item.id)} >Cancel</button>
-    //       <button onClick={() => saveEditt(item.id)}>Save</button>
-    //       </div>
-    //       </div>
-    //       <div className='show taskBtn ' id=${'edit'+item.id}>
-    //       <button  onClick={() => edit (item.id)} id='editBtn'>Edit</button>
-    //       <button  onClick={ () =>deleteTask(item.id)}>Delete</button>
-    //       </div>
-         
-    //   </div>`
-    //     })
-    // }
-
+    }
     // delete task
     const deleteTask =(id)=>{
       const itemIndex =tasksList.findIndex((item) => item.id ==id)
@@ -191,15 +168,16 @@ function restoreCheckboxes() {
         localStorage.setItem("tasks", JSON.stringify(tasksList))
         console.log(itemIndex +"how");
         window.location.href ="/"
-
-
       }
     }
+    // const cpldtasksId =JSON.parse(localStorage.getItem("doneTasksId")) ||[]
+
+    // const completedTasks=localStorage.getItem("completedTasks")?JSON.stringify(localStorage.getItem("completedTasks")):[]
     return (
         <section className='taskContainer'>
             <div className="nav">
                 <button onClick={allTasks} id='allTasksBtn'>All Tasks</button>
-                <button id='activeTaskBtn'>Active</button>
+                <button id='activeTaskBtn' onClick={activeTasks}>Active</button>
                 <button id='completedTaskBtn'
                  onClick={completedTask}
                 >
@@ -211,8 +189,14 @@ function restoreCheckboxes() {
                 tasksList.length !==0?
                 tasksList.map((item,index) =>(
                     <div key={index} className='task '>
-                        <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
-                        <span id={item.id} className='hide'>✔️</span>
+                      <div>
+                       {/* onClick={()=>selectTask(item.id)} */}
+                        <div id={"check"+1} className='checkk' checked={activeItems.includes(item.id)}
+                onClick={() => toggleTask(item.id)}>
+                          <FaCheck id={'checkIcon'+item.id} className={activeItems.includes(item.id) ? "hide" : "show"}/>
+                        </div>
+                      </div>
+                      <span>{item.task}</span>
                        {/* task editing */}
                         <div id={"taskEdit"+item.id} className='hide'>
                         <textarea name=""  cols="30" value={editTask}  className='' onChange={handleChange}></textarea>
@@ -235,13 +219,20 @@ function restoreCheckboxes() {
             </div>
 
             {/* active tasks */}
-            <div id='active-tasks' className=' hide'>
-                {
-                
-                tasksList.map((item,index) =>(
-                    <div key={index} className='task'>
-                        <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
-                        <span id={item.id} className='hide'>✔️</span>
+            <div id='activeTasks' className=' hide'>
+            <b>{activeIte.length} task(s) remaining</b>
+            {
+                activeIte.length !==0?
+                activeIte.map((item,index) =>(
+                    <div key={index} className='task '>
+                      <div>
+                       {/* onClick={()=>selectTask(item.id)} */}
+                        <div id={"check"+1} className='checkk' checked={activeItems.includes(item.id)}
+                onClick={() => toggleTask(item.id)}>
+                          <FaCheck id={'checkIcon'+item.id} className={activeItems.includes(item.id) ? "hide" : "show"}/>
+                        </div>
+                      </div>
+                      <span>{item.task}</span>
                        {/* task editing */}
                         <div id={"taskEdit"+item.id} className='hide'>
                         <textarea name=""  cols="30" value={editTask}  className='' onChange={handleChange}></textarea>
@@ -256,16 +247,27 @@ function restoreCheckboxes() {
                         </div>
                        
                     </div>
-                ))}
+                )):
+                <div className='task '>
+                  <p>No active task available</p>
+                </div>
+              }
             </div>
             {/* completed tasks */}
             <div id='completedTasks' className='tasks hide'>
+            <b>{completedTasks.length} task(s) done</b>
                 {
-                completedTask.length !==0?
+                completedTasks.length !==0?
                 completedTasks.map((item,index) =>(
                     <div key={index} className='task'>
-                        <label htmlFor=""><input type="checkbox" data-task={item.task} data-id={item.id} name="" id="" className='taskCheck' /> {item.task}</label>
-                        <span id={item.id} className='hide'>✔️</span>
+                      <div>
+                       {/* onClick={()=>selectTask(item.id)} */}
+                        <div id={"check"+1} className='checkk' checked={activeItems.includes(item.id)}
+                onClick={() => toggleTask(item.id)}>
+                          <FaCheck id={'checkIcon'+item.id} className={activeItems.includes(item.id) ? "hide" : "show"}/>
+                        </div>
+                      </div>
+                      <span>{item.task}</span>
                        {/* task editing */}
                         <div id={"taskEdit"+item.id} className='hide'>
                         <textarea name=""  cols="30" value={editTask}  className='' onChange={handleChange}></textarea>
@@ -290,7 +292,7 @@ function restoreCheckboxes() {
     )
 
 
-    completedTask()
+    // completedTask()
 
 }
 export default DisplayTask
