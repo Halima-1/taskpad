@@ -6,9 +6,7 @@ import { FaCheck } from "react-icons/fa";
 const tasksList = localStorage.getItem("tasks")? JSON.parse(localStorage.getItem("tasks")) :[]
 function DisplayTask() {
   // localStorage.setItem("activeItems", JSON.stringify(activeItems));
-
     const [editTask, setEditTask] = useState("");
-
   const handleChange = (e) => {
     setEditTask(e.target.value);
   };
@@ -67,17 +65,6 @@ const toggleTask = (id) => {
   setActiveItems((prev) =>
     prev.includes(id) ? prev.filter((taskId) => taskId !== id) : [...prev, id]
   );
-  // const activeIte = tasksList.filter(
-  //   (task) => activeItems.includes(task.id)
-  // );
-  // const doneItems = tasksList.filter((task) =>
-  //   !activeItems.includes(task.id)
-  // );
-  //       console.log(activeIte);
-  //             console.log(doneItems);
-  //             localStorage.setItem("completedTasks",JSON.stringify(doneItems))
-  //             localStorage.setItem("activeTasks",JSON.stringify(activeIte))
-      // let activeItemss= JSON.parse(localStorage.getItem("activeItems"))?.map(id => Number(id)) || [];
 };
 
 // Derive active and done tasks
@@ -87,8 +74,8 @@ const activeIte = tasksList.filter(
 const doneItems = tasksList.filter((task) =>
   !activeItems.includes(task.id)
 );
-//       console.log(activeIte);
-//             console.log(doneItems);
+      console.log(activeIte);
+            console.log(doneItems);
             localStorage.setItem("completedTasks",JSON.stringify(doneItems))
             localStorage.setItem("activeTasks",JSON.stringify(activeIte))
     // let activeItemss= JSON.parse(localStorage.getItem("activeItems"))?.map(id => Number(id)) || [];

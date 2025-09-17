@@ -104,13 +104,17 @@ button {
   text-align: center;
   /* align-items: center;
   align-self: center; */
+  float: left;
+  margin-right: 20px;
   align-content: center;
 }
 
-.checkIcon {
-  width: 20px;
-  height: 20px;
-  margin-left: 3px;
+/* .todoTask {} */
+
+.checkk svg {
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
 }
 
 .taskBtn :nth-child(1) {
