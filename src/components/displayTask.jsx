@@ -61,23 +61,23 @@ useEffect(() => {
   localStorage.setItem("activeItems", JSON.stringify(activeItems));
 }, [activeItems]);
 
-      const completedTasks =localStorage.getItem("completedTasks")?JSON.parse(localStorage.getItem("completedTasks")):[]
+      let completedTasks =localStorage.getItem("completedTasks")?JSON.parse(localStorage.getItem("completedTasks")):[]
 // Toggle a task (add/remove from completedTasks)
 const toggleTask = (id) => {
   setActiveItems((prev) =>
     prev.includes(id) ? prev.filter((taskId) => taskId !== id) : [...prev, id]
   );
-  const activeIte = tasksList.filter(
-    (task) => activeItems.includes(task.id)
-  );
-  const doneItems = tasksList.filter((task) =>
-    !activeItems.includes(task.id)
-  );
-        console.log(activeIte);
-              console.log(doneItems);
-              localStorage.setItem("completedTasks",JSON.stringify(doneItems))
-              localStorage.setItem("activeTasks",JSON.stringify(activeIte))
-      let activeItemss= JSON.parse(localStorage.getItem("activeItems"))?.map(id => Number(id)) || [];
+  // const activeIte = tasksList.filter(
+  //   (task) => activeItems.includes(task.id)
+  // );
+  // const doneItems = tasksList.filter((task) =>
+  //   !activeItems.includes(task.id)
+  // );
+  //       console.log(activeIte);
+  //             console.log(doneItems);
+  //             localStorage.setItem("completedTasks",JSON.stringify(doneItems))
+  //             localStorage.setItem("activeTasks",JSON.stringify(activeIte))
+      // let activeItemss= JSON.parse(localStorage.getItem("activeItems"))?.map(id => Number(id)) || [];
 };
 
 // Derive active and done tasks
@@ -87,11 +87,11 @@ const activeIte = tasksList.filter(
 const doneItems = tasksList.filter((task) =>
   !activeItems.includes(task.id)
 );
-      console.log(activeIte);
-            console.log(doneItems);
+//       console.log(activeIte);
+//             console.log(doneItems);
             localStorage.setItem("completedTasks",JSON.stringify(doneItems))
             localStorage.setItem("activeTasks",JSON.stringify(activeIte))
-    let activeItemss= JSON.parse(localStorage.getItem("activeItems"))?.map(id => Number(id)) || [];
+    // let activeItemss= JSON.parse(localStorage.getItem("activeItems"))?.map(id => Number(id)) || [];
 
 // TASKS DISPLAY
     let allTask =document.getElementById("tasks")
@@ -149,9 +149,9 @@ const doneItems = tasksList.filter((task) =>
         console.log("hi")
       }
       // const tasksList = localStorage.getItem("tasks")? JSON.parse(localStorage.getItem("tasks")) :[]
-      // const activeTsk =tasksList.filter(task => !activeItemss.includes(task.id))
-      console.log(activeIte);
-      console.log(activeItemss);
+      // // const activeTsk =tasksList.filter(task => !activeItemss.includes(task.id))
+      // console.log(activeIte);
+      // console.log(activeItemss);
 
 
     }
@@ -172,7 +172,9 @@ const doneItems = tasksList.filter((task) =>
     }
     // const cpldtasksId =JSON.parse(localStorage.getItem("doneTasksId")) ||[]
 
-    // const completedTasks=localStorage.getItem("completedTasks")?JSON.stringify(localStorage.getItem("completedTasks")):[]
+     completedTasks =localStorage.getItem("completedTasks")?JSON.parse(localStorage.getItem("completedTasks")):[]
+    //  activeIte =localStorage.getItem("activeItems")?JSON.parse(localStorage.getItem("completedTasks")):[]
+
     return (
         <section className='taskContainer'>
             <div className="nav">

@@ -9,12 +9,21 @@ function AddTask() {
   };
   const toDo={}
     const addToList =()=>{
+      const taskValidatn =TasksList.find (item =>item.task ===task)
+      const activeItems =JSON.parse(localStorage.getItem("activeItems")) || []
         if(task){
-            toDo.task = task 
+          if(!taskValidatn)
+            {
+              toDo.task = task 
             toDo.id =TasksList.length+1
             TasksList.push(toDo)
+            activeItems.push(toDo.id)
             localStorage.setItem("tasks", JSON.stringify(TasksList))
+            localStorage.setItem("activeItems", JSON.stringify(activeItems))
             window.location.href="/"
+            }
+            else{console.log("task already exist")}
+
         }
         else{console.log("add a task")}
     }
